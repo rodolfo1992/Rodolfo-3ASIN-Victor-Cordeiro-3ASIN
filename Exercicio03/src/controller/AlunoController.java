@@ -1,9 +1,9 @@
 package controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import model.Aluno;
+import to.AlunoTO;
 
 //import to.AlunoTO;
 
@@ -72,7 +73,7 @@ public class AlunoController extends HttpServlet {
 		Aluno aluno = new Aluno(id,nome,endereco,dtnasc,email,telefone,rg,cpf);
 		aluno.criar();
 		//aluno.carregar();
-		//ClienteDAO dao = new ClienteDAO();
+		//AlunoDAO dao = new AlunoDAO();
 				if("acao".equals("Inserir"))
 				{
 				aluno.criar();
@@ -101,17 +102,15 @@ public class AlunoController extends HttpServlet {
 							}	
 							
 						}
-				PrintWriter out = response.getWriter();
-				out.println("<html><head><title>Aluno Cadastrado</title></head><body>");
-				out.println( "id: "+aluno.getId()+"<br>");
-				out.println( "nome: "+aluno.getNome()+"<br>");
-				out.println( "endereco: "+aluno.getEndereco()+"<br>");
-				out.println( "data de nascimento: "+aluno.getdtNasc()+"<br>");
-				out.println( "email: "+aluno.getEmail()+"<br>");
-				out.println( "fone: "+aluno.getTelefone()+"<br>");
-				out.println( "rg: "+aluno.getRG()+"<br>");
-				out.println( "cpf: "+aluno.getCPF()+"<br>");
-				out.println("</body></html>");			
+						
+						AlunoTO to = new AlunoTO();
+						to.setId(aluno.getId());
+						to.setNome(aluno.getNome());
+						to.setTelefone(aluno.getTelefone());
+						request.setAttribute("aluno", to);
+						RequestDispatcher view = 
+								request.getRequestDispatcher("AlunoForm.jsp");
+					view.forward(request, response);	
 				
 	}
 				}
